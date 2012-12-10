@@ -62,6 +62,7 @@ public class TCPClient {
 		InetAddress inetAddress = InetAddress.getByName("127.0.0.1"); 		
 		int port = 10001;
 		String mensaje;
+		
 		InputStreamReader inputStreamReader = new InputStreamReader(System.in); 
 		BufferedReader escribirTeclado = new BufferedReader(inputStreamReader);
 		
