@@ -12,7 +12,7 @@ public class HttpServer {
 	public static void main(String[] args) throws IOException{
 		final String newLine = "\r\n";
 		final int port = 8080;
-		final String fileNameError404 = "fileError404.html"; 
+		final String fileNameError404 = "errors/fileError404.html"; 
 		final String response200 = "HTTP/1.0 200 OK";
 		final String response404 = "HTTP/1.0 404 NOT FOUND";
 		
@@ -27,7 +27,7 @@ public class HttpServer {
 		while (true){//devuelve true si hay otra linea de entrada en el scanner. ->scanner.hasNextLine()
 			//Leemos cada linea.
 			String line = scanner.nextLine();//devuelve la linea
-			//if(line.startsWith("GET"))
+			if(line.startsWith("GET"))
 				
 			
 			System.out.println(line);
@@ -71,7 +71,7 @@ public class HttpServer {
 		 * 
 		 * trozo(5, 10);
 		 * 
-		 * ESCRIBIR METODOS PARA: WriteHeader y demás que se irán viendo cuando se escriba el codigo
+		 * 
 		 */
 	
 		
@@ -79,14 +79,14 @@ public class HttpServer {
 		String header  = response + newLine + newLine;
 		byte[] headerBuffer = header.getBytes(); //se guarda un byte[]
 		
+		FileInputStream fileInputStream = new FileInputStream(fileName);
+		
 		OutputStream outputStream = socket.getOutputStream();
 		outputStream.write(headerBuffer);//Escribir todos los bytes de ese byte[]
 		
 		final int bufferSize = 2048;
 		byte[] buffer = new byte[bufferSize];
 		
-		FileInputStream fileInputStream = new FileInputStream(fileName);
-
 		int count;
 		while((count = fileInputStream.read(buffer))!=-1){
 			outputStream.write(buffer, 0, count);

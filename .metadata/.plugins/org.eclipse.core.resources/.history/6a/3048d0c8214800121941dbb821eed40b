@@ -10,11 +10,9 @@ public class HttpServer {
 	 * @param args
 	 */
 	public static void main(String[] args) throws IOException{
-		final String newLine = "\r\n";
-		final int port = 8080;
-		final String fileNameError404 = "fileError404.html"; 
-		final String response200 = "HTTP/1.0 200 OK";
-		final String response404 = "HTTP/1.0 404 NOT FOUND";
+		String newLine = "\r\n";
+		
+		int port = 8080;
 		
 		ServerSocket serverSocket = new ServerSocket(port);
 		
@@ -22,12 +20,12 @@ public class HttpServer {
 		
 		Scanner scanner = new Scanner(socket.getInputStream());
 	
-		String fileName = "index.html";
+		String fileName = "";
 		
 		while (true){//devuelve true si hay otra linea de entrada en el scanner. ->scanner.hasNextLine()
 			//Leemos cada linea.
 			String line = scanner.nextLine();//devuelve la linea
-			//if(line.startsWith("GET"))
+			if(line.startsWith("GET"))
 				
 			
 			System.out.println(line);
@@ -35,15 +33,10 @@ public class HttpServer {
 				break;
 		}
 		
-		//Comprobamos que existe el fichero instanciandolo y comprobando.
 		File file= new File(fileName);
-		String responseFileName = file.exists() ? fileName : fileNameError404;
-		//Si existe el filename, y sino el de error.
+		if(!file.exists());
 		
-		String response = file.exists() ? response200 : response404;
-		/*if(!file.exists())
-			fileName = fileNameError404;*/
-		
+		FileInputStream fileInputStream = new FileInputStream(fileName);
 		/*El servidor tiene que devolver un html cuando el navegador se lo consulte, y tienen que decirnos
 		 * http/1.1 200 ok 
 		 * <cr><lf>
@@ -71,36 +64,15 @@ public class HttpServer {
 		 * 
 		 * trozo(5, 10);
 		 * 
-		 * ESCRIBIR METODOS PARA: WriteHeader y demás que se irán viendo cuando se escriba el codigo
+		 * 
 		 */
-	
-		
-		
-		String header  = response + newLine + newLine;
-		byte[] headerBuffer = header.getBytes(); //se guarda un byte[]
-		
-		OutputStream outputStream = socket.getOutputStream();
-		outputStream.write(headerBuffer);//Escribir todos los bytes de ese byte[]
-		
-		final int bufferSize = 2048;
-		byte[] buffer = new byte[bufferSize];
-		
-		FileInputStream fileInputStream = new FileInputStream(fileName);
-
-		int count;
-		while((count = fileInputStream.read(buffer))!=-1){
-			outputStream.write(buffer, 0, count);
-			//Lee del archivo y escribe en el flujo de salida.
-		}
-	/*	PrintWriter printWriter = new PrintWriter(outputStream, true);
+		PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
 		printWriter.print("HTTP/1.0 404 NOT FOUND" + newLine);
 		printWriter.print(newLine);
 		
 		printWriter.flush();
 		
-		printWriter.close();*/
-		fileInputStream.close();
-		
+		printWriter.close();
 		socket.close();	
 		serverSocket.close();
 

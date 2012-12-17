@@ -12,7 +12,7 @@ public class HttpServer {
 	public static void main(String[] args) throws IOException{
 		final String newLine = "\r\n";
 		final int port = 8080;
-		final String fileNameError404 = "fileError404.html"; 
+		final String fileNameError404 = "errors/fileError404.html"; 
 		final String response200 = "HTTP/1.0 200 OK";
 		final String response404 = "HTTP/1.0 404 NOT FOUND";
 		
