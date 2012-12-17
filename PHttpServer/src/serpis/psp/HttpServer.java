@@ -10,6 +10,8 @@ public class HttpServer {
 	 * @param args
 	 */
 	public static void main(String[] args) throws IOException{
+		String newLine = "\r\n";
+		
 		int port = 8080;
 		
 		ServerSocket serverSocket = new ServerSocket(port);
@@ -47,11 +49,21 @@ public class HttpServer {
 		 * http/1.1 404 not found
 		 * <cr> <lf>
 		 * 
+		 * obtener el nombre del archivo de la cadena, con un indexoff
+		 * 
+		 * indexOff(cadena, ' ')
+		 * 
+		 * trozo(5, 10);
+		 * 
+		 * 
 		 */
 		PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
-		printWriter.println("HTTP/1.0 404 NOT FOUND");
-		printWriter.print("\r\n");
+		printWriter.print("HTTP/1.0 404 NOT FOUND" + newLine);
+		printWriter.print(newLine);
 		
+		printWriter.flush();
+		
+		printWriter.close();
 		socket.close();	
 		serverSocket.close();
 
