@@ -1,8 +1,13 @@
 {
-  "/usr/lib/jvm/java-7-openjdk-i386/jre/lib/rt.jar": {
+  "\\usr\\lib\\jvm\\java-7-openjdk-i386\\jre\\lib\\rt.jar": {
     "coordinate": "jre:jre:zip:call:1.0.0",
-    "location": "/usr/lib/jvm/java-7-openjdk-i386/jre/lib/rt.jar",
+    "location": "\\usr\\lib\\jvm\\java-7-openjdk-i386\\jre\\lib\\rt.jar",
     "status": "RESOLVED",
     "error": "No class path info available for \u0027/usr/lib/jvm/java-7-openjdk-i386/jre/lib/rt.jar\u0027. Skipped."
+  },
+  "C:\\Users\\Kevin\\Dropbox\\2 DAM\\PSP\\Git\\PSP\\PHttpServer\\src": {
+    "location": "C:\\Users\\Kevin\\Dropbox\\2 DAM\\PSP\\Git\\PSP\\PHttpServer\\src",
+    "status": "UNRESOLVED",
+    "error": "No class path info available for \u0027C:\\Users\\Kevin\\Dropbox\\2 DAM\\PSP\\Git\\PSP\\PHttpServer\\src\u0027. Skipped."
   }
 }
