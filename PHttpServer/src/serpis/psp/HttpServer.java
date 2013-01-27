@@ -3,8 +3,7 @@ package serpis.psp;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 public class HttpServer {
 
@@ -15,10 +14,11 @@ public class HttpServer {
 
 	public static void main(String[] args) throws IOException{
 
-		/*ThreadServer threadServer = new ThreadServer();
-		threadServer.start();*/
+		socket = serverSocket.accept();
+		Thread threadServer = new Thread(new ThreadServer(socket));
+		threadServer.start();
 
-		monoHilo();
+		//monoHilo();
 		
 	
 	}
