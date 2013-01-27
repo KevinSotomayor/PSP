@@ -3,23 +3,21 @@ package serpis.psp;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HttpServer {
 
 	private static ServerSocket serverSocket;
 	private static Socket socket;
 	private static final String newLine = "\r\n";
+	private static Scanner scanner;
 
 	public static void main(String[] args) throws IOException{
 
-	//Reeestructurarlo por meeeeeeeeeeeeeeeetodos!
+		/*ThreadServer threadServer = new ThreadServer();
+		threadServer.start();*/
 
-		/*MultiHilo multiHilo = new MultiHilo();
-		multiHilo.start();*/
-
-		//Para ejecutar en consola, ir a la carpeta del proyecto y una vez dentro de /bin
-		//tenemos que ejecutar java serpis.psp.httpserver
-			//java -cp bin serpis.psp.httpserver
 		monoHilo();
 		
 	
@@ -37,22 +35,29 @@ public class HttpServer {
 		String fileName = getFileName(socket.getInputStream());
 		writeHeader( socket.getOutputStream(),  fileName);
 		writeFile( socket.getOutputStream(),  fileName);
-		
 		socket.close();	
-		serverSocket.close();
+		
+		
 		}
-	
+		//serverSocket.close();
 	}
 	
 	//TO-DO implementar correctamente
 	private static String getFileName(InputStream inputStream){
 
-		Scanner scanner = new Scanner(inputStream);
+		scanner = new Scanner(inputStream);
 	
-		String fileName = "index.html";
+		//String fileName = "index.html";
+		String fileName = "";
+
 		while (true){
 			String line = scanner.nextLine();
-			//if(line.startsWith("GET"))
+			if(line.startsWith("GET")){ //GET  /otro.html HTTP/1.1
+					int count = 5;
+					while(line.charAt(count) != ' ')//Mientra no haya un espacio que siga añadiendo caracteres.
+						fileName += line.charAt(count++);
+
+			}
 
 			System.out.println(line);
 			if(line.equals(""))
@@ -80,13 +85,14 @@ public class HttpServer {
 	
 	private static void writeFile(OutputStream outputStream, String fileName) throws IOException{
 		final String fileNameError404 = "fileError404.html"; 
+		
 		File file= new File(fileName);
 		String responseFileName = file.exists() ? fileName : fileNameError404;		
 		
 		final int bufferSize = 2048;
 		byte[] buffer = new byte[bufferSize];
 		
-		FileInputStream fileInputStream = new FileInputStream(fileName);
+		FileInputStream fileInputStream = new FileInputStream(responseFileName);
 
 		int count;
 		while((count = fileInputStream.read(buffer))!=-1)
