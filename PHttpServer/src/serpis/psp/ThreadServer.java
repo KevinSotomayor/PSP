@@ -2,7 +2,6 @@ package serpis.psp;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,12 +10,11 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class ThreadServer implements Runnable  {
-	
-	private static ServerSocket serverSocket;
 	private static final String newLine = "\r\n";
 	private static Scanner scanner;
+	private ServerSocket serverSocket;
 	private Socket socket;
-	
+
 	
 	public ThreadServer(Socket socket){
 		this.socket = socket;
@@ -24,20 +22,21 @@ public class ThreadServer implements Runnable  {
 
 	
 	public void run(){
-		final int port = 8080;
+		//final int port = 8080;
+		
 			try {
-				serverSocket = new ServerSocket(port);
+				//serverSocket = new ServerSocket(port);
+
 				while (true){
 	
 				    //socket = serverSocket.accept();
-				     
 
 					String fileName = getFileName(socket.getInputStream());
 					writeHeader( socket.getOutputStream(),  fileName);
 					writeFile( socket.getOutputStream(),  fileName);
 					socket.close();	
 					
-					Thread.sleep(5000);
+					Thread.sleep(2000);
 					
 					}
 				
@@ -54,15 +53,13 @@ public class ThreadServer implements Runnable  {
 	private static String getFileName(InputStream inputStream){
 
 		scanner = new Scanner(inputStream);
-	
-		//String fileName = "index.html";
 		String fileName = "";
 
 		while (true){
 			String line = scanner.nextLine();
 			if(line.startsWith("GET")){ //GET  /otro.html HTTP/1.1
 					int count = 5;
-					while(line.charAt(count) != ' ')//Mientra no haya un espacio que siga añadiendo caracteres.
+					while(line.charAt(count) != ' ')//Mientra no haya un espacio que siga aï¿½adiendo caracteres.
 						fileName += line.charAt(count++);
 
 			}
