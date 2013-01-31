@@ -5,14 +5,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.util.Scanner;
 
 public class ThreadServer implements Runnable  {
 	private static final String newLine = "\r\n";
-	private static Scanner scanner;
-	private ServerSocket serverSocket;
 	private Socket socket;
 
 	
@@ -52,7 +49,7 @@ public class ThreadServer implements Runnable  {
 	
 	private static String getFileName(InputStream inputStream){
 
-		scanner = new Scanner(inputStream);
+		Scanner scanner = new Scanner(inputStream);
 		String fileName = "";
 
 		while (true){
