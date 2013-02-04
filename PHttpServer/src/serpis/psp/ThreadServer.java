@@ -9,9 +9,17 @@ import java.net.*;
 import java.util.Scanner;
 
 public class ThreadServer implements Runnable  {
-	private static final String newLine = "\r\n";
-	private Socket socket;
+	private final String newLine = "\r\n";
+	final String defaultFileName = "index.html";
+	private final String fileNameError404 = "fileError404.html"; 
+	private final String response200 = "HTTP/1.0 200 OK";
+	private final String response404 = "HTTP/1.0 404 NOT FOUND";
 
+	private Socket socket;
+	private InputStream inputStream;
+	private OutputStream outputStream;
+	private String fileName;
+	private Boolean fileExists;
 	
 	public ThreadServer(Socket socket){
 		this.socket = socket;
@@ -19,22 +27,29 @@ public class ThreadServer implements Runnable  {
 
 	
 	public void run(){
-					String fileName;
+		System.out.println(Thread.currentThread().getName() + " inicio.");
+		
 					try {
-					fileName = getFileName(socket.getInputStream());
-					writeHeader( socket.getOutputStream(),  fileName);
-					writeFile( socket.getOutputStream(),  fileName);
+					inputStream = socket.getInputStream();
+					outputStream = socket.getOutputStream();
+					getFileName();
+					getFileExists();
+					writeHeader();
+					writeFile();
 					socket.close();	
 					
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					} 
-				
+					System.out.println(Thread.currentThread().getName() + " fin.");
 
 		}
 	
-	private static String getFileName(InputStream inputStream){
+	private void getFileName(){
 
 		Scanner scanner = new Scanner(inputStream);
 		String fileName = "";
@@ -47,22 +62,22 @@ public class ThreadServer implements Runnable  {
 						fileName += line.charAt(count++);
 
 			}
-
-			System.out.println(line);
 			if(line.equals(""))
 				break;
 		}
+		if(fileName.equals(""))
+			fileName = defaultFileName;
+		System.out.println(Thread.currentThread().getName() + " fileName="+fileName);
 		
-		return fileName;
 	}
 	
-	//Escribe la cabecera o no en funcion de si existe o no el archivo.
-	private static void writeHeader(OutputStream outputStream, String fileName) throws IOException{
-		final String response200 = "HTTP/1.0 200 OK";
-		final String response404 = "HTTP/1.0 404 NOT FOUND";
+	private void getFileExists() {
 		File file = new File(fileName);
-		String response = file.exists() ? response200 : response404;
+		fileExists = file.exists();
+	}
 
+	private void writeHeader() throws IOException{
+		String response = fileExists ? response200 : response404;
 		
 		String header  = response + newLine + newLine;
 		byte[] headerBuffer = header.getBytes(); 
@@ -72,11 +87,9 @@ public class ThreadServer implements Runnable  {
 	}
 	
 	
-	private static void writeFile(OutputStream outputStream, String fileName) throws IOException{
-		final String fileNameError404 = "fileError404.html"; 
-		
-		File file= new File(fileName);
-		String responseFileName = file.exists() ? fileName : fileNameError404;		
+	private  void writeFile() throws IOException, InterruptedException{
+
+		String responseFileName = fileExists  ? fileName : fileNameError404;		
 		
 		final int bufferSize = 2048;
 		byte[] buffer = new byte[bufferSize];
@@ -84,9 +97,13 @@ public class ThreadServer implements Runnable  {
 		FileInputStream fileInputStream = new FileInputStream(responseFileName);
 
 		int count;
-		while((count = fileInputStream.read(buffer))!=-1)
+		while((count = fileInputStream.read(buffer))!=-1){
+			System.out.println(Thread.currentThread().getName() + ".");
+		    Thread.sleep(1000);
+		
 			outputStream.write(buffer, 0, count);
-
+		}
+		
 		fileInputStream.close();
 		
 	}

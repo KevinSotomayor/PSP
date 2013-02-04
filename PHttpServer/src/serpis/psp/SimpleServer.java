@@ -12,15 +12,12 @@ public class SimpleServer {
 	private static final String newLine = "\r\n";
 
 	public static void process(Socket socket) throws IOException, InterruptedException {
-			while (true){
 
 			String fileName = getFileName(socket.getInputStream());
 			writeHeader( socket.getOutputStream(),  fileName);
 			writeFile( socket.getOutputStream(),  fileName);
-
 			socket.close();
-			
-			}
+	
 
 		}
 		
@@ -32,7 +29,7 @@ public class SimpleServer {
 
 			while (true){
 				String line = scanner.nextLine();
-				System.out.println(line);
+				//System.out.println(line);
 				if(line.startsWith("GET")){ //GET  /otro.html HTTP/1.1
 						int count = 5;
 						while(line.charAt(count) != ' ')//Mientra no haya un espacio que siga a�adiendo caracteres.
@@ -55,7 +52,7 @@ public class SimpleServer {
 			File file = new File(fileName);
 			String response = file.exists() ? response200 : response404;
 
-			System.out.println(response);
+			//System.out.println(response);
 			String header  = response + newLine + newLine;
 			byte[] headerBuffer = header.getBytes(); 
 			
@@ -77,13 +74,13 @@ public class SimpleServer {
 			FileInputStream fileInputStream = new FileInputStream(responseFileName);
 
 			int count;
-			while((count = fileInputStream.read(buffer))!=-1)
+			while((count = fileInputStream.read(buffer))!=-1){
 				
 				System.out.println(Thread.currentThread().getName() + ".");
 				Thread.sleep(1000);
 				
 				outputStream.write(buffer, 0, count);
-
+			}
 			fileInputStream.close();
 			
 		}
