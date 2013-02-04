@@ -19,23 +19,17 @@ public class ThreadServer implements Runnable  {
 
 	
 	public void run(){
-
 					String fileName;
 					try {
-						fileName = getFileName(socket.getInputStream());
-					
+					fileName = getFileName(socket.getInputStream());
 					writeHeader( socket.getOutputStream(),  fileName);
 					writeFile( socket.getOutputStream(),  fileName);
 					socket.close();	
 					
-					Thread.sleep(2000);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					} 
 				
 
 		}
