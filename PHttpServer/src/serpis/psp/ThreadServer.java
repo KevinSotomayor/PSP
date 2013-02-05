@@ -39,11 +39,9 @@ public class ThreadServer implements Runnable  {
 					socket.close();	
 					
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+
 					} 
 					System.out.println(Thread.currentThread().getName() + " fin.");
 
@@ -52,7 +50,7 @@ public class ThreadServer implements Runnable  {
 	private void getFileName(){
 
 		Scanner scanner = new Scanner(inputStream);
-		String fileName = "";
+		fileName = "";
 
 		while (true){
 			String line = scanner.nextLine();
